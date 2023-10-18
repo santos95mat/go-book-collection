@@ -1,6 +1,13 @@
 package main
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gofiber/fiber/v2"
+	initializer "github.com/santos95mat/book-collection/src/innitializer"
+)
+
+func init() {
+	initializer.LoadEnvVariables()
+}
 
 func main() {
 	app := fiber.New()
