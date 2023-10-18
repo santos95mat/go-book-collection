@@ -1,11 +1,14 @@
 package routes
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gofiber/fiber/v2"
+	"github.com/santos95mat/book-collection/src/controller"
+)
+
+var statusController controller.StatusController
 
 func AddStatusRoute(v1 fiber.Router) {
 	status := v1.Group("/status")
 
-	status.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Book-collection API is running")
-	})
+	status.Get("/", statusController.Get)
 }
