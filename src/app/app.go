@@ -16,13 +16,10 @@ func Run() {
 
 	getRoutes()
 
-	app.Get("/status", func(c *fiber.Ctx) error {
-		return c.SendString("Book-collection API is running")
-	})
-
 	app.Listen(os.Getenv("PORT"))
 }
 
 func getRoutes() {
 	routes.AddBookRoutes(v1)
+	routes.AddStatusRoute(v1)
 }
