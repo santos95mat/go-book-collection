@@ -8,5 +8,8 @@ type CreateBookDto struct {
 }
 
 type SearchBookDto struct {
-	CreateBookDto
+	Name   string `query:"name"`
+	Author string `query:"author"`
+	Gender string `query:"gender"`
+	Year   string `query:"year"`
 }
