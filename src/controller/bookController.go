@@ -1,13 +1,29 @@
 package controller
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gofiber/fiber/v2"
+	"github.com/santos95mat/book-collection/src/dto"
+	"github.com/santos95mat/book-collection/src/util"
+)
 
 type BookController struct{}
 
 func (BookController) Create(c *fiber.Ctx) error {
-	return c.JSON(fiber.Map{
-		"message": "Cadastrar um livro na base de dados",
-	})
+	var bookBody dto.CreateBookDto
+
+	err := c.BodyParser(&bookBody)
+
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).JSON(err)
+	}
+
+	err = util.ValidBook(bookBody)
+
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).JSON(err)
+	}
+
+	return c.JSON(bookBody)
 }
 
 func (BookController) GetMany(c *fiber.Ctx) error {
