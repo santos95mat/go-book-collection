@@ -8,6 +8,7 @@ import (
 func init() {
 	initializer.LoadEnvVariables()
 	initializer.ConnectDB()
+	//migrate.Migrate()
 }
 
 func main() {
