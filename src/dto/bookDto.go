@@ -6,3 +6,7 @@ type CreateBookDto struct {
 	Gender string `json:"gender"`
 	Year   string `json:"year"`
 }
+
+type SearchBookDto struct {
+	CreateBookDto
+}
