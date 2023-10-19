@@ -69,14 +69,37 @@ func (b BookController) GetOne(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(book)
 }
 
-func (BookController) Update(c *fiber.Ctx) error {
-	return c.JSON(fiber.Map{
-		"message": "Editar um livro na base de dados",
-	})
+func (b BookController) Update(c *fiber.Ctx) error {
+	id := c.Params("id")
+	err := c.BodyParser(&b.bookBody)
+
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).JSON(err)
+	}
+
+	book, err := b.bookService.Update(id, b.bookBody)
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(book)
 }
 
-func (BookController) Delete(c *fiber.Ctx) error {
-	return c.JSON(fiber.Map{
-		"message": "Deletar um livro na base de dados",
+func (b BookController) Delete(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	err := b.bookService.Delete(id)
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Livro deletado com sucesso",
 	})
 }

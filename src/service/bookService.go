@@ -35,7 +35,7 @@ func (BookService) GetMany(data dto.SearchBookDto) ([]model.Book, error) {
 	genderP := "%" + data.Gender + "%"
 	yearP := "%" + data.Year + "%"
 
-	err := initializer.DB.Where(queries, nameP, authorP, genderP, yearP).Find(&books).Error
+	err := initializer.DB.Preload(clause.Associations).Where(queries, nameP, authorP, genderP, yearP).Find(&books).Error
 
 	return books, err
 }
@@ -48,6 +48,34 @@ func (BookService) GetOne(id string) (model.Book, error) {
 	return book, err
 }
 
-func (BookService) Update(id string) {}
+func (b BookService) Update(id string, data dto.BodyBookDto) (model.Book, error) {
+	var book model.Book
+	book, err := b.GetOne(id)
 
-func (BookService) Delete(id string) {}
+	if err != nil {
+		return book, err
+	}
+
+	err = initializer.DB.Model(&book).Updates(
+		model.Book{
+			Name:   data.Name,
+			Author: data.Author,
+			Gender: data.Gender,
+			Year:   data.Year,
+		},
+	).Error
+
+	return book, err
+}
+
+func (b BookService) Delete(id string) error {
+	_, err := b.GetOne(id)
+
+	if err != nil {
+		return err
+	}
+
+	err = initializer.DB.Delete(&model.Book{}, "id = ?", id).Error
+
+	return err
+}
