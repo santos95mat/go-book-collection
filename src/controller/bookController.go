@@ -38,11 +38,11 @@ func (b BookController) Create(c *fiber.Ctx) error {
 }
 
 func (b BookController) GetMany(c *fiber.Ctx) error {
-	q := c.Queries()
-	b.bookSearch.Name = q["name"]
-	b.bookSearch.Author = q["author"]
-	b.bookSearch.Gender = q["gender"]
-	b.bookSearch.Year = q["year"]
+	err := c.QueryParser(&b.bookSearch)
+
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).JSON(err)
+	}
 
 	books, err := b.bookService.GetMany(b.bookSearch)
 
