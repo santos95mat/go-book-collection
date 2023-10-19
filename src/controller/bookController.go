@@ -17,13 +17,13 @@ func (BookController) Create(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(err)
 	}
 
-	err = util.ValidBook(bookBody)
+	data, err := util.ValidBook(bookBody)
 
 	if err != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).JSON(err)
+		return c.Status(fiber.StatusUnprocessableEntity).JSON(err.Error())
 	}
 
-	return c.JSON(bookBody)
+	return c.JSON(data)
 }
 
 func (BookController) GetMany(c *fiber.Ctx) error {
