@@ -1,6 +1,6 @@
 package dto
 
-type CreateBookDto struct {
+type BodyBookDto struct {
 	Name   string `json:"name"`
 	Author string `json:"author"`
 	Gender string `json:"gender"`

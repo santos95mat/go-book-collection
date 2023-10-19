@@ -5,11 +5,12 @@ import (
 	"github.com/santos95mat/book-collection/src/dto"
 	"github.com/santos95mat/book-collection/src/initializer"
 	"github.com/santos95mat/book-collection/src/model"
+	"gorm.io/gorm/clause"
 )
 
 type BookService struct{}
 
-func (BookService) Create(data dto.CreateBookDto) (model.Book, error) {
+func (BookService) Create(data dto.BodyBookDto) (model.Book, error) {
 	id := uuid.New()
 
 	book := model.Book{
@@ -39,7 +40,13 @@ func (BookService) GetMany(data dto.SearchBookDto) ([]model.Book, error) {
 	return books, err
 }
 
-func (BookService) GetOne(id string) {}
+func (BookService) GetOne(id string) (model.Book, error) {
+	var book model.Book
+
+	err := initializer.DB.Preload(clause.Associations).First(&book, "id = ?", id).Error
+
+	return book, err
+}
 
 func (BookService) Update(id string) {}
 

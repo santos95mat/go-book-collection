@@ -8,7 +8,7 @@ import (
 	"github.com/santos95mat/book-collection/src/dto"
 )
 
-func ValidBook(data dto.CreateBookDto) (dto.CreateBookDto, error) {
+func ValidBook(data dto.BodyBookDto) (dto.BodyBookDto, error) {
 	data.Name = strings.TrimSpace(data.Name)
 	data.Author = strings.TrimSpace(data.Author)
 	data.Gender = strings.TrimSpace(data.Gender)

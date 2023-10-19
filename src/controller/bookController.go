@@ -10,7 +10,7 @@ import (
 type BookController struct {
 	bookService service.BookService
 	bookSearch  dto.SearchBookDto
-	bookBody    dto.CreateBookDto
+	bookBody    dto.BodyBookDto
 }
 
 func (b BookController) Create(c *fiber.Ctx) error {
@@ -55,10 +55,18 @@ func (b BookController) GetMany(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(books)
 }
 
-func (BookController) GetOne(c *fiber.Ctx) error {
-	return c.JSON(fiber.Map{
-		"message": "Encontrar um livro na base de dados",
-	})
+func (b BookController) GetOne(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	book, err := b.bookService.GetOne(id)
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(book)
 }
 
 func (BookController) Update(c *fiber.Ctx) error {
