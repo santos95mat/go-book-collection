@@ -1,12 +1,11 @@
 # book-collection <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg" height="48px" />
 
-#### Esta é uma API para armazenar dados de livros
+#### Esta é uma API para controle de livros
 
-#### - Pesquisar livros por (nome, autor, tema)
+#### - Pesquisar livros por (nome, autor, genero e ano de publicação)
 
 ## Entidades
 #### - Books (Livros do sistema)
-#### - Autor (Autores do sistema, relação one-to-many com os Livros)
  
 ## Installation
 
