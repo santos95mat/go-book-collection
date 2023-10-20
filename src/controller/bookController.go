@@ -9,7 +9,6 @@ import (
 
 type BookController struct {
 	bookService service.BookService
-	bookSearch  dto.SearchBookDto
 	bookBody    dto.BodyBookDto
 }
 
@@ -38,13 +37,10 @@ func (b BookController) Create(c *fiber.Ctx) error {
 }
 
 func (b BookController) GetMany(c *fiber.Ctx) error {
-	err := c.QueryParser(&b.bookSearch)
+	q := c.Queries()
+	search := q["search"]
 
-	if err != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).JSON(err)
-	}
-
-	books, err := b.bookService.GetMany(b.bookSearch)
+	books, err := b.bookService.GetMany(search)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{

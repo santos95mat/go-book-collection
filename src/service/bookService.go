@@ -26,16 +26,14 @@ func (BookService) Create(data dto.BodyBookDto) (model.Book, error) {
 	return book, err
 }
 
-func (BookService) GetMany(data dto.SearchBookDto) ([]model.Book, error) {
+func (BookService) GetMany(str string) ([]model.Book, error) {
 	var books []model.Book
 
-	queries := "name LIKE ? AND author LIKE ? AND gender LIKE ? AND year LIKE ?"
-	nameP := "%" + data.Name + "%"
-	authorP := "%" + data.Author + "%"
-	genderP := "%" + data.Gender + "%"
-	yearP := "%" + data.Year + "%"
+	search := "%" + str + "%"
 
-	err := initializer.DB.Preload(clause.Associations).Where(queries, nameP, authorP, genderP, yearP).Find(&books).Error
+	err := initializer.DB.Preload(clause.Associations).Where("name LIKE ?", search).
+		Or("author LIKE ?", search).Or("gender LIKE ?", search).Or("year LIKE ?", search).
+		Find(&books).Error
 
 	return books, err
 }
