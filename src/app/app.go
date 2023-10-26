@@ -5,7 +5,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/santos95mat/book-collection/src/app/routes"
+	"github.com/santos95mat/go-book-collection/src/app/routes"
 )
 
 var app = fiber.New()

@@ -1,8 +1,8 @@
 package migrate
 
 import (
-	"github.com/santos95mat/book-collection/src/initializer"
-	"github.com/santos95mat/book-collection/src/model"
+	"github.com/santos95mat/go-book-collection/src/initializer"
+	"github.com/santos95mat/go-book-collection/src/model"
 )
 
 func Migrate() {

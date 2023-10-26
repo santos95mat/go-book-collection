@@ -1,14 +1,15 @@
 package main
 
 import (
-	"github.com/santos95mat/book-collection/src/app"
-	"github.com/santos95mat/book-collection/src/initializer"
+	"github.com/santos95mat/go-book-collection/src/app"
+	"github.com/santos95mat/go-book-collection/src/initializer"
+	"github.com/santos95mat/go-book-collection/src/migrate"
 )
 
 func init() {
 	initializer.LoadEnvVariables()
 	initializer.ConnectDB()
-	//migrate.Migrate()
+	migrate.Migrate()
 }
 
 func main() {

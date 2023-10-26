@@ -2,7 +2,7 @@ package routes
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/santos95mat/book-collection/src/controller"
+	"github.com/santos95mat/go-book-collection/src/controller"
 )
 
 var statusController controller.StatusController
