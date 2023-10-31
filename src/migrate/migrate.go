@@ -8,5 +8,6 @@ import (
 func Migrate() {
 	initializer.DB.AutoMigrate(
 		&model.Book{},
+		&model.User{},
 	)
 }
