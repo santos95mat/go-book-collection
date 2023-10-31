@@ -8,7 +8,7 @@ import (
 	"github.com/santos95mat/go-book-collection/src/dto"
 )
 
-func ValidBook(data dto.BodyBookDto) (dto.BodyBookDto, error) {
+func ValidBook(data dto.BookBody) (dto.BookBody, error) {
 	data.Name = strings.TrimSpace(data.Name)
 	data.Author = strings.TrimSpace(data.Author)
 	data.Gender = strings.TrimSpace(data.Gender)

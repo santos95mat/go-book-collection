@@ -10,7 +10,7 @@ import (
 
 type BookService struct{}
 
-func (BookService) Create(data dto.BodyBookDto) (model.Book, error) {
+func (BookService) Create(data dto.BookBody) (model.Book, error) {
 	id := uuid.New()
 
 	book := model.Book{
@@ -46,7 +46,7 @@ func (BookService) GetOne(id string) (model.Book, error) {
 	return book, err
 }
 
-func (b BookService) Update(id string, data dto.BodyBookDto) (model.Book, error) {
+func (b BookService) Update(id string, data dto.BookBody) (model.Book, error) {
 	var book model.Book
 	book, err := b.GetOne(id)
 
