@@ -5,7 +5,10 @@
 #### - Pesquisar livros por (nome, autor, genero e ano de publicação)
 
 ## Entidades
-#### - Books (Livros do sistema)
+### - Books (Livros do sistema)
+### - Users (Usuários do sistema)
+#### -- admin (Usuário que gerencia os livros)
+#### -- normal (Usuário que aluga livros)
  
 ## Installation
 
