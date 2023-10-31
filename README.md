@@ -3,10 +3,16 @@
 #### Esta é uma API para controle de livros
 
 #### - Pesquisar livros por (nome, autor, genero e ano de publicação)
+#### - Alugar Livros
 
 ## Entidades
 #### - Books (Livros do sistema)
- 
+#### - Users (Usuários do sistema)
+
+## User Roles
+#### - admin (usuários do sistema que gerencia a book collection)
+#### - normal (Usuários normais do sistema)
+
 ## Installation
 
 ```bash
