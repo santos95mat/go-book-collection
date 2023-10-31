@@ -22,4 +22,5 @@ func Run() {
 func getRoutes() {
 	routes.AddBookRoutes(v1)
 	routes.AddStatusRoute(v1)
+	routes.AddUserRoutes(v1)
 }
