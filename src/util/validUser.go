@@ -36,7 +36,7 @@ func ValidUser(data dto.UserBody) (dto.UserBody, error) {
 	}
 
 	// Validação da senha
-	if len(data.Password) != 8 {
+	if len(data.Password) <= 8 {
 		err := errors.New("error: Password must have 8 characters")
 		return data, err
 	}
