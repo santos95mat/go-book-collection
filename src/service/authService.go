@@ -12,7 +12,9 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-func (UserService) Login(data dto.UserLogin) (model.User, string, error) {
+type AuthService struct{}
+
+func (AuthService) Login(data dto.UserLogin) (model.User, string, error) {
 	var user model.User
 
 	err := initializer.DB.Preload(clause.Associations).First(&user, "email = ?", data.Email).Error

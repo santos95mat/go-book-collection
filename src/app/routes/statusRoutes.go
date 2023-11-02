@@ -11,5 +11,4 @@ func AddStatusRoute(v1 fiber.Router) {
 	status := v1.Group("/status")
 
 	status.Get("/", statusController.Get)
-	status.Get("/", statusController.Get)
 }
