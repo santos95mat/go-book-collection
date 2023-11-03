@@ -9,6 +9,7 @@ import (
 )
 
 var app = fiber.New()
+
 var v1 = app.Group("/v1")
 
 func Run() {

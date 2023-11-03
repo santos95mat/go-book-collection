@@ -2,18 +2,14 @@ package routes
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/santos95mat/go-book-collection/src/controller"
-	"github.com/santos95mat/go-book-collection/src/middleware"
 )
 
-var bookController controller.BookController
-
 func AddBookRoutes(v1 fiber.Router) {
-	book := v1.Group("/book", middleware.Auth)
+	book := v1.Group("/book")
 
-	book.Post("/", bookController.Create)
-	book.Get("/", bookController.GetMany)
-	book.Get("/:id", bookController.GetOne)
-	book.Put("/:id", bookController.Update)
-	book.Delete("/:id", bookController.Delete)
+	book.Post("/", authMiddleware.AuthADM, bookController.Create)
+	book.Get("/", authMiddleware.Auth, bookController.GetMany)
+	book.Get("/:id", authMiddleware.Auth, bookController.GetOne)
+	book.Put("/:id", authMiddleware.AuthADM, bookController.Update)
+	book.Delete("/:id", authMiddleware.AuthADM, bookController.Delete)
 }
