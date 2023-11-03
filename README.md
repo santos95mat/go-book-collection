@@ -29,6 +29,9 @@ PORT=3000
 
 # URL de conexão com o banco de dados
 DB_URL="host=localhost user=postgres password=admin dbname=postgres port=5432 sslmode=disable"
+
+# uma string que o JWT vai usar para gerar o token
+SECRET="eyJhbGciOiJdfdfdssfreteryhfghjhgjhgj"
 ```
 
 ```bash
