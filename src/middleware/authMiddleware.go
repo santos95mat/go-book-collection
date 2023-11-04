@@ -14,6 +14,12 @@ type AuthMiddleware struct{}
 
 func (b AuthMiddleware) Auth(c *fiber.Ctx) error {
 	tokenStr := c.Cookies("Authorization")
+	if tokenStr == "" {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"message": "Unauthorized",
+		})
+	}
+
 	token, _ := jwt.Parse(tokenStr, b.keyFunc)
 	claims, ok := token.Claims.(jwt.MapClaims)
 
@@ -43,6 +49,12 @@ func (b AuthMiddleware) Auth(c *fiber.Ctx) error {
 
 func (b AuthMiddleware) AuthADM(c *fiber.Ctx) error {
 	tokenStr := c.Cookies("Authorization")
+	if tokenStr == "" {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"message": "Unauthorized",
+		})
+	}
+
 	token, _ := jwt.Parse(tokenStr, b.keyFunc)
 	claims, ok := token.Claims.(jwt.MapClaims)
 
