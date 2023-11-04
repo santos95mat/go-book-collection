@@ -1,6 +1,7 @@
 package app
 
 import (
+	"log"
 	"os"
 
 	"github.com/gofiber/fiber/v2"
@@ -17,7 +18,11 @@ func Run() {
 
 	getRoutes()
 
-	app.Listen(os.Getenv("PORT"))
+	err := app.Listen(os.Getenv("PORT"))
+
+	if err != nil {
+		log.Fatalln(err)
+	}
 }
 
 func getRoutes() {
