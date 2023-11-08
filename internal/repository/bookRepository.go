@@ -1,4 +1,4 @@
-package service
+package repository
 
 import (
 	"github.com/google/uuid"
@@ -8,10 +8,10 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-type BookService struct {
+type BookRepository struct {
 }
 
-func (BookService) Create(data dto.BookInputDTO) (model.Book, error) {
+func (BookRepository) Create(data dto.BookInputDTO) (model.Book, error) {
 	id := uuid.New()
 
 	book := model.Book{
@@ -27,7 +27,7 @@ func (BookService) Create(data dto.BookInputDTO) (model.Book, error) {
 	return book, err
 }
 
-func (BookService) GetMany(str string) ([]model.Book, error) {
+func (BookRepository) GetMany(str string) ([]model.Book, error) {
 	var books []model.Book
 
 	search := "%" + str + "%"
@@ -39,7 +39,7 @@ func (BookService) GetMany(str string) ([]model.Book, error) {
 	return books, err
 }
 
-func (BookService) GetOne(id string) (model.Book, error) {
+func (BookRepository) GetOne(id string) (model.Book, error) {
 	var book model.Book
 
 	err := database.DB.Preload(clause.Associations).First(&book, "id = ?", id).Error
@@ -47,7 +47,7 @@ func (BookService) GetOne(id string) (model.Book, error) {
 	return book, err
 }
 
-func (b BookService) Update(id string, data dto.BookInputDTO) (model.Book, error) {
+func (b BookRepository) Update(id string, data dto.BookInputDTO) (model.Book, error) {
 	var book model.Book
 	book, err := b.GetOne(id)
 
@@ -67,7 +67,7 @@ func (b BookService) Update(id string, data dto.BookInputDTO) (model.Book, error
 	return book, err
 }
 
-func (b BookService) Delete(id string) error {
+func (b BookRepository) Delete(id string) error {
 	_, err := b.GetOne(id)
 
 	if err != nil {

@@ -1,4 +1,4 @@
-package service
+package repository
 
 import (
 	"os"
@@ -12,9 +12,9 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-type AuthService struct{}
+type AuthRepository struct{}
 
-func (AuthService) Login(data dto.UserLoginDTO) (model.User, string, error) {
+func (AuthRepository) Login(data dto.UserLoginDTO) (model.User, string, error) {
 	var user model.User
 
 	err := database.DB.Preload(clause.Associations).First(&user, "email = ?", data.Email).Error

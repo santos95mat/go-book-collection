@@ -3,12 +3,12 @@ package controller
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/santos95mat/go-book-collection/internal/dto"
-	"github.com/santos95mat/go-book-collection/internal/service"
+	"github.com/santos95mat/go-book-collection/internal/repository"
 	"github.com/santos95mat/go-book-collection/internal/util"
 )
 
 type UserController struct {
-	userService service.UserService
+	userRepository repository.UserRepository
 }
 
 func (b UserController) Create(c *fiber.Ctx) error {
@@ -25,7 +25,7 @@ func (b UserController) Create(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(err.Error())
 	}
 
-	user, err := b.userService.Create(createUserDTO)
+	user, err := b.userRepository.Create(createUserDTO)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -40,7 +40,7 @@ func (b UserController) GetMany(c *fiber.Ctx) error {
 	q := c.Queries()
 	search := q["search"]
 
-	users, err := b.userService.GetMany(search)
+	users, err := b.userRepository.GetMany(search)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -54,7 +54,7 @@ func (b UserController) GetMany(c *fiber.Ctx) error {
 func (b UserController) GetOne(c *fiber.Ctx) error {
 	id := c.Params("id")
 
-	user, err := b.userService.GetOne(id)
+	user, err := b.userRepository.GetOne(id)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -74,7 +74,7 @@ func (b UserController) Update(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(err)
 	}
 
-	user, err := b.userService.Update(id, updateUserDTO)
+	user, err := b.userRepository.Update(id, updateUserDTO)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -88,7 +88,7 @@ func (b UserController) Update(c *fiber.Ctx) error {
 func (b UserController) Delete(c *fiber.Ctx) error {
 	id := c.Params("id")
 
-	err := b.userService.Delete(id)
+	err := b.userRepository.Delete(id)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{

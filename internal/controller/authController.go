@@ -5,11 +5,11 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/santos95mat/go-book-collection/internal/dto"
-	"github.com/santos95mat/go-book-collection/internal/service"
+	"github.com/santos95mat/go-book-collection/internal/repository"
 )
 
 type AuthController struct {
-	authService service.AuthService
+	authRepository repository.AuthRepository
 }
 
 func (b AuthController) Login(c *fiber.Ctx) error {
@@ -21,7 +21,7 @@ func (b AuthController) Login(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(err)
 	}
 
-	user, token, err := b.authService.Login(data)
+	user, token, err := b.authRepository.Login(data)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{

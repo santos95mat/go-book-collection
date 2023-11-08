@@ -1,4 +1,4 @@
-package service
+package repository
 
 import (
 	"github.com/google/uuid"
@@ -9,9 +9,9 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-type UserService struct{}
+type UserRepository struct{}
 
-func (UserService) Create(data dto.UserInputDTO) (model.User, error) {
+func (UserRepository) Create(data dto.UserInputDTO) (model.User, error) {
 	id := uuid.New()
 	hash, err := bcrypt.GenerateFromPassword([]byte(data.Password), 10)
 
@@ -33,7 +33,7 @@ func (UserService) Create(data dto.UserInputDTO) (model.User, error) {
 	return user, err
 }
 
-func (UserService) GetMany(str string) ([]model.User, error) {
+func (UserRepository) GetMany(str string) ([]model.User, error) {
 	var users []model.User
 	search := "%" + str + "%"
 
@@ -43,7 +43,7 @@ func (UserService) GetMany(str string) ([]model.User, error) {
 	return users, err
 }
 
-func (UserService) GetOne(id string) (model.User, error) {
+func (UserRepository) GetOne(id string) (model.User, error) {
 	var user model.User
 
 	err := database.DB.Preload(clause.Associations).First(&user, "id = ?", id).Error
@@ -51,7 +51,7 @@ func (UserService) GetOne(id string) (model.User, error) {
 	return user, err
 }
 
-func (b UserService) Update(id string, data dto.UserInputDTO) (model.User, error) {
+func (b UserRepository) Update(id string, data dto.UserInputDTO) (model.User, error) {
 	var user model.User
 	user, err := b.GetOne(id)
 
@@ -78,7 +78,7 @@ func (b UserService) Update(id string, data dto.UserInputDTO) (model.User, error
 	return user, err
 }
 
-func (b UserService) Delete(id string) error {
+func (b UserRepository) Delete(id string) error {
 	_, err := b.GetOne(id)
 
 	if err != nil {
