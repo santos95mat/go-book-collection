@@ -9,23 +9,23 @@ import (
 
 type UserController struct {
 	userService service.UserService
-	userBody    dto.UserInputDTO
 }
 
 func (b UserController) Create(c *fiber.Ctx) error {
-	err := c.BodyParser(&b.userBody)
+	var createUserDTO dto.UserInputDTO
+	err := c.BodyParser(&createUserDTO)
 
 	if err != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(err)
 	}
 
-	data, err := util.ValidUser(b.userBody)
+	createUserDTO, err = util.ValidUser(createUserDTO)
 
 	if err != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(err.Error())
 	}
 
-	user, err := b.userService.Create(data)
+	user, err := b.userService.Create(createUserDTO)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -66,14 +66,15 @@ func (b UserController) GetOne(c *fiber.Ctx) error {
 }
 
 func (b UserController) Update(c *fiber.Ctx) error {
+	var updateUserDTO dto.UserInputDTO
 	id := c.Params("id")
-	err := c.BodyParser(&b.userBody)
+	err := c.BodyParser(&updateUserDTO)
 
 	if err != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(err)
 	}
 
-	user, err := b.userService.Update(id, b.userBody)
+	user, err := b.userService.Update(id, updateUserDTO)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{

@@ -9,23 +9,23 @@ import (
 
 type BookController struct {
 	bookService service.BookService
-	bookBody    dto.BookInputDTO
 }
 
 func (b BookController) Create(c *fiber.Ctx) error {
-	err := c.BodyParser(&b.bookBody)
+	var createBookDTO dto.BookInputDTO
+	err := c.BodyParser(&createBookDTO)
 
 	if err != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(err)
 	}
 
-	data, err := util.ValidBook(b.bookBody)
+	createBookDTO, err = util.ValidBook(createBookDTO)
 
 	if err != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(err.Error())
 	}
 
-	book, err := b.bookService.Create(data)
+	book, err := b.bookService.Create(createBookDTO)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -66,14 +66,15 @@ func (b BookController) GetOne(c *fiber.Ctx) error {
 }
 
 func (b BookController) Update(c *fiber.Ctx) error {
+	var updateBookDTO dto.BookInputDTO
 	id := c.Params("id")
-	err := c.BodyParser(&b.bookBody)
+	err := c.BodyParser(&updateBookDTO)
 
 	if err != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(err)
 	}
 
-	book, err := b.bookService.Update(id, b.bookBody)
+	book, err := b.bookService.Update(id, updateBookDTO)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
