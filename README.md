@@ -36,8 +36,8 @@ SECRET="eyJhbGciOiJdfdfdssfreteryhfghjhgjhgj"
 ```
 
 ```bash
-# first run migrate to create entites into DB
-go run cmd/migrate/main.go
+# before start the project run the migrate package to create entites in database
+$ go run cmd/migrate/main.go
 
 # to start the project
 $ go run cmd/api/main.go
