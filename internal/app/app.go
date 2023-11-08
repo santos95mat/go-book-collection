@@ -6,17 +6,15 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/santos95mat/go-book-collection/src/app/routes"
+	"github.com/santos95mat/go-book-collection/internal/app/routes"
 )
 
-var app = fiber.New()
-
-var v1 = app.Group("/v1")
-
 func Run() {
-	app.Use(cors.New())
+	app := fiber.New()
+	v1 := app.Group("/v1")
 
-	getRoutes()
+	app.Use(cors.New())
+	getRoutes(v1)
 
 	err := app.Listen(os.Getenv("PORT"))
 
@@ -25,7 +23,7 @@ func Run() {
 	}
 }
 
-func getRoutes() {
+func getRoutes(v1 fiber.Router) {
 	routes.AddStatusRoute(v1)
 	routes.AddBookRoutes(v1)
 	routes.AddUserRoutes(v1)

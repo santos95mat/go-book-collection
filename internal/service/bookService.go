@@ -2,13 +2,14 @@ package service
 
 import (
 	"github.com/google/uuid"
-	"github.com/santos95mat/go-book-collection/src/dto"
-	"github.com/santos95mat/go-book-collection/src/initializer"
-	"github.com/santos95mat/go-book-collection/src/model"
+	"github.com/santos95mat/go-book-collection/initializer/database"
+	"github.com/santos95mat/go-book-collection/internal/dto"
+	"github.com/santos95mat/go-book-collection/internal/model"
 	"gorm.io/gorm/clause"
 )
 
-type BookService struct{}
+type BookService struct {
+}
 
 func (BookService) Create(data dto.BookInputDTO) (model.Book, error) {
 	id := uuid.New()
@@ -21,7 +22,7 @@ func (BookService) Create(data dto.BookInputDTO) (model.Book, error) {
 		Year:   data.Year,
 	}
 
-	err := initializer.DB.Create(&book).Error
+	err := database.DB.Create(&book).Error
 
 	return book, err
 }
@@ -31,7 +32,7 @@ func (BookService) GetMany(str string) ([]model.Book, error) {
 
 	search := "%" + str + "%"
 
-	err := initializer.DB.Preload(clause.Associations).Where("name LIKE ?", search).
+	err := database.DB.Preload(clause.Associations).Where("name LIKE ?", search).
 		Or("author LIKE ?", search).Or("gender LIKE ?", search).Or("year LIKE ?", search).
 		Find(&books).Error
 
@@ -41,7 +42,7 @@ func (BookService) GetMany(str string) ([]model.Book, error) {
 func (BookService) GetOne(id string) (model.Book, error) {
 	var book model.Book
 
-	err := initializer.DB.Preload(clause.Associations).First(&book, "id = ?", id).Error
+	err := database.DB.Preload(clause.Associations).First(&book, "id = ?", id).Error
 
 	return book, err
 }
@@ -54,7 +55,7 @@ func (b BookService) Update(id string, data dto.BookInputDTO) (model.Book, error
 		return book, err
 	}
 
-	err = initializer.DB.Model(&book).Updates(
+	err = database.DB.Model(&book).Updates(
 		model.Book{
 			Name:   data.Name,
 			Author: data.Author,
@@ -73,7 +74,7 @@ func (b BookService) Delete(id string) error {
 		return err
 	}
 
-	err = initializer.DB.Delete(&model.Book{}, "id = ?", id).Error
+	err = database.DB.Delete(&model.Book{}, "id = ?", id).Error
 
 	return err
 }

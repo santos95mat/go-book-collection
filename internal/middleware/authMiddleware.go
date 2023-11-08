@@ -6,8 +6,8 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
-	"github.com/santos95mat/go-book-collection/src/initializer"
-	"github.com/santos95mat/go-book-collection/src/model"
+	"github.com/santos95mat/go-book-collection/internal/initializer"
+	"github.com/santos95mat/go-book-collection/internal/model"
 )
 
 type AuthMiddleware struct{}

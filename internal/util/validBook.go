@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/santos95mat/go-book-collection/src/dto"
+	"github.com/santos95mat/go-book-collection/internal/dto"
 )
 
 func ValidBook(data dto.BookInputDTO) (dto.BookInputDTO, error) {

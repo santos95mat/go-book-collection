@@ -5,7 +5,7 @@ import (
 	"net/mail"
 	"strings"
 
-	"github.com/santos95mat/go-book-collection/src/dto"
+	"github.com/santos95mat/go-book-collection/internal/dto"
 )
 
 func ValidUser(data dto.UserInputDTO) (dto.UserInputDTO, error) {

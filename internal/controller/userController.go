@@ -2,9 +2,9 @@ package controller
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/santos95mat/go-book-collection/src/dto"
-	"github.com/santos95mat/go-book-collection/src/service"
-	"github.com/santos95mat/go-book-collection/src/util"
+	"github.com/santos95mat/go-book-collection/internal/dto"
+	"github.com/santos95mat/go-book-collection/internal/service"
+	"github.com/santos95mat/go-book-collection/internal/util"
 )
 
 type UserController struct {
