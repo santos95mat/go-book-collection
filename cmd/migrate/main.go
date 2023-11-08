@@ -11,7 +11,7 @@ func init() {
 	database.Connect()
 }
 
-func Migrate() {
+func main() {
 	database.DB.AutoMigrate(
 		&model.Book{},
 		&model.User{},
