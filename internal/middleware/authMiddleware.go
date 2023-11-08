@@ -6,7 +6,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
-	"github.com/santos95mat/go-book-collection/internal/initializer"
+	"github.com/santos95mat/go-book-collection/initializer/database"
 	"github.com/santos95mat/go-book-collection/internal/model"
 )
 
@@ -31,7 +31,7 @@ func (b AuthMiddleware) Auth(c *fiber.Ctx) error {
 		}
 
 		var user model.User
-		err := initializer.DB.First(&user, "id = ?", claims["sub"]).Error
+		err := database.DB.First(&user, "id = ?", claims["sub"]).Error
 
 		if err != nil {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
@@ -66,7 +66,7 @@ func (b AuthMiddleware) AuthADM(c *fiber.Ctx) error {
 		}
 
 		var user model.User
-		err := initializer.DB.First(&user, "id = ?", claims["sub"]).Error
+		err := database.DB.First(&user, "id = ?", claims["sub"]).Error
 
 		if err != nil {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
