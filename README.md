@@ -3,7 +3,7 @@
 #### Esta é uma API para controle de livros
 
 #### - Pesquise livros por (nome, autor, genero e ano de publicação)
-#### - Favorites seus livros (Building)
+#### - Favorite seus livros (Building)
 #### - Deixe comentários (Building)
 
 ## Entidades
