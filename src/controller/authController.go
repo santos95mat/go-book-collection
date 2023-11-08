@@ -13,7 +13,7 @@ type AuthController struct {
 }
 
 func (b AuthController) Login(c *fiber.Ctx) error {
-	var data dto.UserLogin
+	var data dto.UserLoginDTO
 
 	err := c.BodyParser(&data)
 

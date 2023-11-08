@@ -9,7 +9,7 @@ import (
 
 type BookController struct {
 	bookService service.BookService
-	bookBody    dto.BookBody
+	bookBody    dto.BookInputDTO
 }
 
 func (b BookController) Create(c *fiber.Ctx) error {

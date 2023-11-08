@@ -14,7 +14,7 @@ import (
 
 type AuthService struct{}
 
-func (AuthService) Login(data dto.UserLogin) (model.User, string, error) {
+func (AuthService) Login(data dto.UserLoginDTO) (model.User, string, error) {
 	var user model.User
 
 	err := initializer.DB.Preload(clause.Associations).First(&user, "email = ?", data.Email).Error

@@ -11,7 +11,7 @@ import (
 
 type UserService struct{}
 
-func (UserService) Create(data dto.UserBody) (model.User, error) {
+func (UserService) Create(data dto.UserInputDTO) (model.User, error) {
 	id := uuid.New()
 	hash, err := bcrypt.GenerateFromPassword([]byte(data.Password), 10)
 
@@ -51,7 +51,7 @@ func (UserService) GetOne(id string) (model.User, error) {
 	return user, err
 }
 
-func (b UserService) Update(id string, data dto.UserBody) (model.User, error) {
+func (b UserService) Update(id string, data dto.UserInputDTO) (model.User, error) {
 	var user model.User
 	user, err := b.GetOne(id)
 

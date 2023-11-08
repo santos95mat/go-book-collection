@@ -9,7 +9,7 @@ import (
 
 type UserController struct {
 	userService service.UserService
-	userBody    dto.UserBody
+	userBody    dto.UserInputDTO
 }
 
 func (b UserController) Create(c *fiber.Ctx) error {

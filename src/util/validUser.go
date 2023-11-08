@@ -8,7 +8,7 @@ import (
 	"github.com/santos95mat/go-book-collection/src/dto"
 )
 
-func ValidUser(data dto.UserBody) (dto.UserBody, error) {
+func ValidUser(data dto.UserInputDTO) (dto.UserInputDTO, error) {
 	data.Name = strings.TrimSpace(data.Name)
 	data.Number = strings.TrimSpace(data.Number)
 	data.Email = strings.TrimSpace(data.Email)
