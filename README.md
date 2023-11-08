@@ -2,8 +2,9 @@
 
 #### Esta é uma API para controle de livros
 
-#### - Pesquisar livros por (nome, autor, genero e ano de publicação)
-#### - Alugar Livros
+#### - Pesquise livros por (nome, autor, genero e ano de publicação)
+#### - Favorites seus livros (Building)
+#### - Deixe comentários (Building)
 
 ## Entidades
 #### - Books (Livros do sistema)
@@ -25,7 +26,7 @@ Para conseguir rodar a aplicação sem erros, você precisará criar o arquivo .
 
 ```
 # Porta onde a API vai rodar
-PORT=3000
+PORT=:3000
 
 # URL de conexão com o banco de dados
 DB_URL="host=localhost user=postgres password=admin dbname=postgres port=5432 sslmode=disable"
@@ -35,6 +36,9 @@ SECRET="eyJhbGciOiJdfdfdssfreteryhfghjhgjhgj"
 ```
 
 ```bash
-# start
-$ go run main.go
+# first run migrate to create entites into DB
+go run cmd/migrate/main.go
+
+# to start the project
+$ go run cmd/api/main.go
 ```
