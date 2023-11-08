@@ -1,4 +1,4 @@
-package migrate
+package main
 
 import (
 	"github.com/santos95mat/go-book-collection/initializer/database"
