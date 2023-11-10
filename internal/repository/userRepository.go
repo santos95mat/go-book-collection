@@ -4,22 +4,22 @@ import (
 	"github.com/google/uuid"
 	"github.com/santos95mat/go-book-collection/initializer/database"
 	"github.com/santos95mat/go-book-collection/internal/dto"
-	"github.com/santos95mat/go-book-collection/internal/model"
+	"github.com/santos95mat/go-book-collection/internal/entity"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm/clause"
 )
 
 type UserRepository struct{}
 
-func (UserRepository) Create(data dto.UserInputDTO) (model.User, error) {
+func (UserRepository) Create(data dto.UserInputDTO) (entity.User, error) {
 	id := uuid.New()
 	hash, err := bcrypt.GenerateFromPassword([]byte(data.Password), 10)
 
 	if err != nil {
-		return model.User{}, err
+		return entity.User{}, err
 	}
 
-	user := model.User{
+	user := entity.User{
 		ID:       id,
 		Name:     data.Name,
 		Number:   data.Number,
@@ -33,8 +33,8 @@ func (UserRepository) Create(data dto.UserInputDTO) (model.User, error) {
 	return user, err
 }
 
-func (UserRepository) GetMany(str string) ([]model.User, error) {
-	var users []model.User
+func (UserRepository) GetMany(str string) ([]entity.User, error) {
+	var users []entity.User
 	search := "%" + str + "%"
 
 	err := database.DB.Preload(clause.Associations).Where("name LIKE ?", search).
@@ -43,16 +43,16 @@ func (UserRepository) GetMany(str string) ([]model.User, error) {
 	return users, err
 }
 
-func (UserRepository) GetOne(id string) (model.User, error) {
-	var user model.User
+func (UserRepository) GetOne(id string) (entity.User, error) {
+	var user entity.User
 
 	err := database.DB.Preload(clause.Associations).First(&user, "id = ?", id).Error
 
 	return user, err
 }
 
-func (b UserRepository) Update(id string, data dto.UserInputDTO) (model.User, error) {
-	var user model.User
+func (b UserRepository) Update(id string, data dto.UserInputDTO) (entity.User, error) {
+	var user entity.User
 	user, err := b.GetOne(id)
 
 	if err != nil {
@@ -66,7 +66,7 @@ func (b UserRepository) Update(id string, data dto.UserInputDTO) (model.User, er
 	}
 
 	err = database.DB.Model(&user).Updates(
-		model.User{
+		entity.User{
 			Name:     data.Name,
 			Number:   data.Number,
 			Email:    data.Email,
@@ -85,7 +85,7 @@ func (b UserRepository) Delete(id string) error {
 		return err
 	}
 
-	err = database.DB.Delete(&model.User{}, "id = ?", id).Error
+	err = database.DB.Delete(&entity.User{}, "id = ?", id).Error
 
 	return err
 }

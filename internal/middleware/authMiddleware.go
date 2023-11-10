@@ -7,7 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/santos95mat/go-book-collection/initializer/database"
-	"github.com/santos95mat/go-book-collection/internal/model"
+	"github.com/santos95mat/go-book-collection/internal/entity"
 )
 
 type AuthMiddleware struct{}
@@ -30,7 +30,7 @@ func (b AuthMiddleware) Auth(c *fiber.Ctx) error {
 			})
 		}
 
-		var user model.User
+		var user entity.User
 		err := database.DB.First(&user, "id = ?", claims["sub"]).Error
 
 		if err != nil {
@@ -65,7 +65,7 @@ func (b AuthMiddleware) AuthADM(c *fiber.Ctx) error {
 			})
 		}
 
-		var user model.User
+		var user entity.User
 		err := database.DB.First(&user, "id = ?", claims["sub"]).Error
 
 		if err != nil {

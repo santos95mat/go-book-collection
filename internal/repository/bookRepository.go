@@ -4,17 +4,17 @@ import (
 	"github.com/google/uuid"
 	"github.com/santos95mat/go-book-collection/initializer/database"
 	"github.com/santos95mat/go-book-collection/internal/dto"
-	"github.com/santos95mat/go-book-collection/internal/model"
+	"github.com/santos95mat/go-book-collection/internal/entity"
 	"gorm.io/gorm/clause"
 )
 
 type BookRepository struct {
 }
 
-func (BookRepository) Create(data dto.BookInputDTO) (model.Book, error) {
+func (BookRepository) Create(data dto.BookInputDTO) (entity.Book, error) {
 	id := uuid.New()
 
-	book := model.Book{
+	book := entity.Book{
 		ID:     id,
 		Name:   data.Name,
 		Author: data.Author,
@@ -27,8 +27,8 @@ func (BookRepository) Create(data dto.BookInputDTO) (model.Book, error) {
 	return book, err
 }
 
-func (BookRepository) GetMany(str string) ([]model.Book, error) {
-	var books []model.Book
+func (BookRepository) GetMany(str string) ([]entity.Book, error) {
+	var books []entity.Book
 
 	search := "%" + str + "%"
 
@@ -39,16 +39,16 @@ func (BookRepository) GetMany(str string) ([]model.Book, error) {
 	return books, err
 }
 
-func (BookRepository) GetOne(id string) (model.Book, error) {
-	var book model.Book
+func (BookRepository) GetOne(id string) (entity.Book, error) {
+	var book entity.Book
 
 	err := database.DB.Preload(clause.Associations).First(&book, "id = ?", id).Error
 
 	return book, err
 }
 
-func (b BookRepository) Update(id string, data dto.BookInputDTO) (model.Book, error) {
-	var book model.Book
+func (b BookRepository) Update(id string, data dto.BookInputDTO) (entity.Book, error) {
+	var book entity.Book
 	book, err := b.GetOne(id)
 
 	if err != nil {
@@ -56,7 +56,7 @@ func (b BookRepository) Update(id string, data dto.BookInputDTO) (model.Book, er
 	}
 
 	err = database.DB.Model(&book).Updates(
-		model.Book{
+		entity.Book{
 			Name:   data.Name,
 			Author: data.Author,
 			Gender: data.Gender,
@@ -74,7 +74,7 @@ func (b BookRepository) Delete(id string) error {
 		return err
 	}
 
-	err = database.DB.Delete(&model.Book{}, "id = ?", id).Error
+	err = database.DB.Delete(&entity.Book{}, "id = ?", id).Error
 
 	return err
 }

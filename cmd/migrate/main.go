@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/santos95mat/go-book-collection/initializer/database"
 	"github.com/santos95mat/go-book-collection/initializer/loadenv"
-	"github.com/santos95mat/go-book-collection/internal/model"
+	"github.com/santos95mat/go-book-collection/internal/entity"
 )
 
 func init() {
@@ -13,7 +13,7 @@ func init() {
 
 func main() {
 	database.DB.AutoMigrate(
-		&model.Book{},
-		&model.User{},
+		&entity.Book{},
+		&entity.User{},
 	)
 }
