@@ -16,7 +16,7 @@ func Run() {
 	app.Use(cors.New())
 	getRoutes(v1)
 
-	err := app.Listen(os.Getenv("PORT"))
+	err := app.Listen(":" + os.Getenv("PORT"))
 
 	if err != nil {
 		log.Fatalln(err)

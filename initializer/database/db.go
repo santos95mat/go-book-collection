@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/santos95mat/go-book-collection/internal/entity"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -18,4 +19,9 @@ func Connect() {
 	if err != nil {
 		log.Fatal("Failed to connect to DB")
 	}
+
+	DB.AutoMigrate(
+		&entity.Book{},
+		&entity.User{},
+	)
 }
