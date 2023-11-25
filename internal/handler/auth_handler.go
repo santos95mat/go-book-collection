@@ -1,18 +1,24 @@
-package controller
+package handler
 
 import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/santos95mat/go-book-collection/internal/dto"
-	"github.com/santos95mat/go-book-collection/internal/repository"
+	"github.com/santos95mat/go-book-collection/internal/interfaces"
 )
 
-type AuthController struct {
-	authRepository repository.AuthRepository
+type authHandler struct {
+	authRepository interfaces.AuthRepositoryInterface
 }
 
-func (b AuthController) Login(c *fiber.Ctx) error {
+func NewAuthHandler(rep interfaces.AuthRepositoryInterface) *authHandler {
+	return &authHandler{
+		authRepository: rep,
+	}
+}
+
+func (h *authHandler) Login(c *fiber.Ctx) error {
 	var data dto.UserLoginDTO
 
 	err := c.BodyParser(&data)
@@ -21,7 +27,7 @@ func (b AuthController) Login(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(err)
 	}
 
-	user, token, err := b.authRepository.Login(data)
+	user, token, err := h.authRepository.Login(data)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{

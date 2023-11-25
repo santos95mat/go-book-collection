@@ -12,9 +12,13 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-type AuthRepository struct{}
+type authRepository struct{}
 
-func (AuthRepository) Login(data dto.UserLoginDTO) (entity.User, string, error) {
+func NewAuthRepository() *authRepository {
+	return &authRepository{}
+}
+
+func (*authRepository) Login(data dto.UserLoginDTO) (entity.User, string, error) {
 	var user entity.User
 
 	err := database.DB.Preload(clause.Associations).First(&user, "email = ?", data.Email).Error

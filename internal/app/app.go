@@ -11,10 +11,9 @@ import (
 
 func Run() {
 	app := fiber.New()
-	v1 := app.Group("/v1")
 
 	app.Use(cors.New())
-	getRoutes(v1)
+	getRoutes(app)
 
 	err := app.Listen(":" + os.Getenv("PORT"))
 
@@ -23,9 +22,9 @@ func Run() {
 	}
 }
 
-func getRoutes(v1 fiber.Router) {
-	routes.AddStatusRoute(v1)
-	routes.AddBookRoutes(v1)
-	routes.AddUserRoutes(v1)
-	routes.AddAuthRoutes(v1)
+func getRoutes(app *fiber.App) {
+	routes.AddStatusRoute(app)
+	routes.AddBookRoutes(app)
+	routes.AddUserRoutes(app)
+	routes.AddAuthRoutes(app)
 }

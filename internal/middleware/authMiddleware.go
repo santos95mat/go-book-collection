@@ -10,9 +10,13 @@ import (
 	"github.com/santos95mat/go-book-collection/internal/entity"
 )
 
-type AuthMiddleware struct{}
+type authMiddleware struct{}
 
-func (b AuthMiddleware) Auth(c *fiber.Ctx) error {
+func NewAuthMiddleware() *authMiddleware {
+	return &authMiddleware{}
+}
+
+func (m *authMiddleware) Auth(c *fiber.Ctx) error {
 	tokenStr := c.Cookies("Authorization")
 	if tokenStr == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
@@ -20,7 +24,7 @@ func (b AuthMiddleware) Auth(c *fiber.Ctx) error {
 		})
 	}
 
-	token, _ := jwt.Parse(tokenStr, b.keyFunc)
+	token, _ := jwt.Parse(tokenStr, m.keyFunc)
 	claims, ok := token.Claims.(jwt.MapClaims)
 
 	if ok && token.Valid {
@@ -47,7 +51,7 @@ func (b AuthMiddleware) Auth(c *fiber.Ctx) error {
 	}
 }
 
-func (b AuthMiddleware) AuthADM(c *fiber.Ctx) error {
+func (m *authMiddleware) AuthADM(c *fiber.Ctx) error {
 	tokenStr := c.Cookies("Authorization")
 	if tokenStr == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
@@ -55,7 +59,7 @@ func (b AuthMiddleware) AuthADM(c *fiber.Ctx) error {
 		})
 	}
 
-	token, _ := jwt.Parse(tokenStr, b.keyFunc)
+	token, _ := jwt.Parse(tokenStr, m.keyFunc)
 	claims, ok := token.Claims.(jwt.MapClaims)
 
 	if ok && token.Valid {
@@ -88,7 +92,7 @@ func (b AuthMiddleware) AuthADM(c *fiber.Ctx) error {
 	}
 }
 
-func (AuthMiddleware) keyFunc(token *jwt.Token) (interface{}, error) {
+func (*authMiddleware) keyFunc(token *jwt.Token) (interface{}, error) {
 	_, ok := token.Method.(*jwt.SigningMethodHMAC)
 
 	if !ok {

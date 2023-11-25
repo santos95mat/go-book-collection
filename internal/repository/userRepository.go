@@ -9,9 +9,13 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-type UserRepository struct{}
+type userRepository struct{}
 
-func (UserRepository) Create(data dto.UserInputDTO) (entity.User, error) {
+func NewUserRepository() *userRepository {
+	return &userRepository{}
+}
+
+func (*userRepository) Create(data dto.UserInputDTO) (entity.User, error) {
 	id := uuid.New()
 	hash, err := bcrypt.GenerateFromPassword([]byte(data.Password), 10)
 
@@ -33,7 +37,7 @@ func (UserRepository) Create(data dto.UserInputDTO) (entity.User, error) {
 	return user, err
 }
 
-func (UserRepository) GetMany(str string) ([]entity.User, error) {
+func (*userRepository) GetMany(str string) ([]entity.User, error) {
 	var users []entity.User
 	search := "%" + str + "%"
 
@@ -43,7 +47,7 @@ func (UserRepository) GetMany(str string) ([]entity.User, error) {
 	return users, err
 }
 
-func (UserRepository) GetOne(id string) (entity.User, error) {
+func (*userRepository) GetOne(id string) (entity.User, error) {
 	var user entity.User
 
 	err := database.DB.Preload(clause.Associations).First(&user, "id = ?", id).Error
@@ -51,9 +55,9 @@ func (UserRepository) GetOne(id string) (entity.User, error) {
 	return user, err
 }
 
-func (b UserRepository) Update(id string, data dto.UserInputDTO) (entity.User, error) {
+func (r *userRepository) Update(id string, data dto.UserInputDTO) (entity.User, error) {
 	var user entity.User
-	user, err := b.GetOne(id)
+	user, err := r.GetOne(id)
 
 	if err != nil {
 		return user, err
@@ -78,8 +82,8 @@ func (b UserRepository) Update(id string, data dto.UserInputDTO) (entity.User, e
 	return user, err
 }
 
-func (b UserRepository) Delete(id string) error {
-	_, err := b.GetOne(id)
+func (r *userRepository) Delete(id string) error {
+	_, err := r.GetOne(id)
 
 	if err != nil {
 		return err

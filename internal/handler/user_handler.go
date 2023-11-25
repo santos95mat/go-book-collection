@@ -1,31 +1,37 @@
-package controller
+package handler
 
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/santos95mat/go-book-collection/internal/dto"
-	"github.com/santos95mat/go-book-collection/internal/repository"
+	"github.com/santos95mat/go-book-collection/internal/interfaces"
 	"github.com/santos95mat/go-book-collection/internal/util"
 )
 
-type BookController struct {
-	bookRepository repository.BookRepository
+type userHandler struct {
+	userRepository interfaces.UserRepositoryInterface
 }
 
-func (b BookController) Create(c *fiber.Ctx) error {
-	var createBookDTO dto.BookInputDTO
-	err := c.BodyParser(&createBookDTO)
+func NewUserHandler(rep interfaces.UserRepositoryInterface) *userHandler {
+	return &userHandler{
+		userRepository: rep,
+	}
+}
+
+func (h *userHandler) Create(c *fiber.Ctx) error {
+	var createUserDTO dto.UserInputDTO
+	err := c.BodyParser(&createUserDTO)
 
 	if err != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(err)
 	}
 
-	createBookDTO, err = util.ValidBook(createBookDTO)
+	createUserDTO, err = util.ValidUser(createUserDTO)
 
 	if err != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(err.Error())
 	}
 
-	book, err := b.bookRepository.Create(createBookDTO)
+	user, err := h.userRepository.Create(createUserDTO)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -33,14 +39,14 @@ func (b BookController) Create(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.Status(fiber.StatusOK).JSON(book)
+	return c.Status(fiber.StatusOK).JSON(user)
 }
 
-func (b BookController) GetMany(c *fiber.Ctx) error {
+func (h *userHandler) GetMany(c *fiber.Ctx) error {
 	q := c.Queries()
 	search := q["search"]
 
-	books, err := b.bookRepository.GetMany(search)
+	users, err := h.userRepository.GetMany(search)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -48,13 +54,13 @@ func (b BookController) GetMany(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.Status(fiber.StatusOK).JSON(books)
+	return c.Status(fiber.StatusOK).JSON(users)
 }
 
-func (b BookController) GetOne(c *fiber.Ctx) error {
+func (h *userHandler) GetOne(c *fiber.Ctx) error {
 	id := c.Params("id")
 
-	book, err := b.bookRepository.GetOne(id)
+	user, err := h.userRepository.GetOne(id)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -62,19 +68,19 @@ func (b BookController) GetOne(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.Status(fiber.StatusOK).JSON(book)
+	return c.Status(fiber.StatusOK).JSON(user)
 }
 
-func (b BookController) Update(c *fiber.Ctx) error {
-	var updateBookDTO dto.BookInputDTO
+func (h *userHandler) Update(c *fiber.Ctx) error {
+	var updateUserDTO dto.UserInputDTO
 	id := c.Params("id")
-	err := c.BodyParser(&updateBookDTO)
+	err := c.BodyParser(&updateUserDTO)
 
 	if err != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(err)
 	}
 
-	book, err := b.bookRepository.Update(id, updateBookDTO)
+	user, err := h.userRepository.Update(id, updateUserDTO)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -82,13 +88,13 @@ func (b BookController) Update(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.Status(fiber.StatusOK).JSON(book)
+	return c.Status(fiber.StatusOK).JSON(user)
 }
 
-func (b BookController) Delete(c *fiber.Ctx) error {
+func (h *userHandler) Delete(c *fiber.Ctx) error {
 	id := c.Params("id")
 
-	err := b.bookRepository.Delete(id)
+	err := h.userRepository.Delete(id)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -97,6 +103,6 @@ func (b BookController) Delete(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"message": "Livro deletado com sucesso",
+		"message": "User deletado com sucesso",
 	})
 }

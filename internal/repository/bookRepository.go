@@ -8,10 +8,14 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-type BookRepository struct {
+type bookRepository struct {
 }
 
-func (BookRepository) Create(data dto.BookInputDTO) (entity.Book, error) {
+func NewBookRepository() *bookRepository {
+	return &bookRepository{}
+}
+
+func (*bookRepository) Create(data dto.BookInputDTO) (entity.Book, error) {
 	id := uuid.New()
 
 	book := entity.Book{
@@ -27,7 +31,7 @@ func (BookRepository) Create(data dto.BookInputDTO) (entity.Book, error) {
 	return book, err
 }
 
-func (BookRepository) GetMany(str string) ([]entity.Book, error) {
+func (*bookRepository) GetMany(str string) ([]entity.Book, error) {
 	var books []entity.Book
 
 	search := "%" + str + "%"
@@ -39,7 +43,7 @@ func (BookRepository) GetMany(str string) ([]entity.Book, error) {
 	return books, err
 }
 
-func (BookRepository) GetOne(id string) (entity.Book, error) {
+func (*bookRepository) GetOne(id string) (entity.Book, error) {
 	var book entity.Book
 
 	err := database.DB.Preload(clause.Associations).First(&book, "id = ?", id).Error
@@ -47,9 +51,9 @@ func (BookRepository) GetOne(id string) (entity.Book, error) {
 	return book, err
 }
 
-func (b BookRepository) Update(id string, data dto.BookInputDTO) (entity.Book, error) {
+func (r *bookRepository) Update(id string, data dto.BookInputDTO) (entity.Book, error) {
 	var book entity.Book
-	book, err := b.GetOne(id)
+	book, err := r.GetOne(id)
 
 	if err != nil {
 		return book, err
@@ -67,8 +71,8 @@ func (b BookRepository) Update(id string, data dto.BookInputDTO) (entity.Book, e
 	return book, err
 }
 
-func (b BookRepository) Delete(id string) error {
-	_, err := b.GetOne(id)
+func (r *bookRepository) Delete(id string) error {
+	_, err := r.GetOne(id)
 
 	if err != nil {
 		return err
