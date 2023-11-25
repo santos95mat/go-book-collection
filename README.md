@@ -26,7 +26,7 @@ Para conseguir rodar a aplicação sem erros, você precisará criar o arquivo .
 
 ```
 # Porta onde a API vai rodar
-PORT=:3000
+PORT=3000
 
 # URL de conexão com o banco de dados
 DB_URL="host=localhost user=postgres password=admin dbname=postgres port=5432 sslmode=disable"
