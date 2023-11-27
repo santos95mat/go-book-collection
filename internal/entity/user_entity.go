@@ -15,4 +15,5 @@ type User struct {
 	Password  string    `json:"-" gorm:"not null"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
+	Books     []*Book   `json:"books" gorm:"many2many:users_books"`
 }

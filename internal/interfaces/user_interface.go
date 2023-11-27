@@ -11,4 +11,5 @@ type UserRepositoryInterface interface {
 	GetOne(id string) (entity.User, error)
 	Update(id string, data dto.UserInputDTO) (entity.User, error)
 	Delete(id string) error
+	FavoriteBook(data dto.UserFavoriteBookDTO) (*entity.User, error)
 }

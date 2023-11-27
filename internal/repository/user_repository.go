@@ -93,3 +93,22 @@ func (r *userRepository) Delete(id string) error {
 
 	return err
 }
+
+func (r *userRepository) FavoriteBook(data dto.UserFavoriteBookDTO) (*entity.User, error) {
+	var book entity.Book
+	err := database.DB.Preload(clause.Associations).First(&book, "id = ?", data.BookID).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	user, err := r.GetOne(data.UserID.String())
+
+	if err != nil {
+		return nil, err
+	}
+
+	database.DB.Model(&user).Association("Books").Append(&book)
+
+	return &user, nil
+}

@@ -1,5 +1,7 @@
 package dto
 
+import "github.com/google/uuid"
+
 type UserInputDTO struct {
 	Name     string `json:"name"`
 	Number   string `json:"number"`
@@ -11,4 +13,9 @@ type UserInputDTO struct {
 type UserLoginDTO struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
+}
+
+type UserFavoriteBookDTO struct {
+	BookID uuid.UUID `json:"book_id"`
+	UserID uuid.UUID `json:"user_id"`
 }

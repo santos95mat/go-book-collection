@@ -3,6 +3,7 @@ package handler
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/santos95mat/go-book-collection/internal/dto"
+	"github.com/santos95mat/go-book-collection/internal/entity"
 	"github.com/santos95mat/go-book-collection/internal/interfaces"
 	"github.com/santos95mat/go-book-collection/internal/util"
 )
@@ -105,4 +106,27 @@ func (h *userHandler) Delete(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"message": "User deletado com sucesso",
 	})
+}
+
+func (h *userHandler) FavoriteBook(c *fiber.Ctx) error {
+	var favoriteBookDto dto.UserFavoriteBookDTO
+	err := c.BodyParser(&favoriteBookDto)
+
+	if err != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).JSON(err)
+	}
+
+	localUser := c.Locals("user")
+
+	favoriteBookDto.UserID = localUser.(entity.User).ID
+
+	user, err := h.userRepository.FavoriteBook(favoriteBookDto)
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(user)
 }

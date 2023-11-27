@@ -20,4 +20,5 @@ func AddUserRoutes(app *fiber.App) {
 	user.Get("/:id", middleware.Auth, userHandler.GetOne)
 	user.Put("/:id", middleware.Auth, userHandler.Update)
 	user.Delete("/:id", middleware.Auth, userHandler.Delete)
+	user.Post("/favorite/book", middleware.Auth, userHandler.FavoriteBook)
 }

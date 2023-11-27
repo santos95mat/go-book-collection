@@ -9,7 +9,6 @@ import (
 func init() {
 	loadenv.LoadEnvVariables()
 	database.Connect()
-	//migrate.Migrate()
 }
 
 func main() {
