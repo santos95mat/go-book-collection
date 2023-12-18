@@ -1,6 +1,10 @@
 package dto
 
-import "github.com/google/uuid"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 type UserInputDTO struct {
 	Name     string `json:"name"`
@@ -12,6 +16,27 @@ type UserInputDTO struct {
 
 type UserLoginDTO struct {
 	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type UserTokenInputDTO struct {
+	UserID     string `json:"user_id"`
+	Email      string `json:"email"`
+	Validation string `json:"validation"`
+}
+
+type UserTokenOutputDTO struct {
+	Token  string    `json:"token"`
+	Expire time.Time `json:"expire"`
+}
+
+type UserTokenValidateDTO struct {
+	UserID string `json:"user_id"`
+	Token  string `json:"token"`
+}
+
+type UserRecoverPasswordDTO struct {
+	Token    string `json:"token"`
 	Password string `json:"password"`
 }
 
