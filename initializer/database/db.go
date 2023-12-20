@@ -23,5 +23,6 @@ func Connect() {
 	DB.AutoMigrate(
 		&entity.Book{},
 		&entity.User{},
+		&entity.RecoveryPassword{},
 	)
 }
