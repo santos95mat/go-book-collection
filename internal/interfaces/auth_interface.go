@@ -7,5 +7,5 @@ import (
 
 type AuthRepositoryInterface interface {
 	Login(data dto.UserLoginDTO) (entity.User, string, error)
-	VerifyEmail(email string) (string, error)
+	VerifyEmail(email string) error
 }

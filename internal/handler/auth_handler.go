@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"encoding/json"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -49,74 +48,27 @@ func (h *authHandler) Login(c *fiber.Ctx) error {
 	})
 }
 
-func (h *authHandler) Token(c *fiber.Ctx) error {
-	var userCreateToken dto.UserTokenInputDTO
-	err := c.BodyParser(&userCreateToken)
-
-	if err != nil {
-		panic(err)
-	}
-
-	id, err := h.authRepository.VerifyEmail(userCreateToken.Email)
-
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": err,
-		})
-	}
-
-	userCreateToken.UserID = id
-
-	req := fiber.Post("http://localhost:3030/token")
-	// to set JSON BODY
-	req.JSON(userCreateToken)
-
-	statusCode, data, errs := req.Bytes()
-
-	if len(errs) > 0 {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": errs,
-		})
-	}
-
-	var userResponseToken dto.UserTokenOutputDTO
-	jsonErr := json.Unmarshal(data, &userResponseToken)
-	if jsonErr != nil {
-		panic(jsonErr)
-	}
-
-	return c.Status(statusCode).JSON(userResponseToken)
-}
-
 func (h *authHandler) RecoveryPassword(c *fiber.Ctx) error {
-	var userValidateToken dto.UserRecoverPasswordDTO
-	err := c.BodyParser(&userValidateToken)
+	var data dto.UserRecoveryPasswordDTO
+
+	err := c.BodyParser(&data)
 
 	if err != nil {
-		panic(err)
+		return c.Status(fiber.StatusUnprocessableEntity).JSON(err)
 	}
 
-	req := fiber.Post("http://localhost:3030/token/validate")
-	// to set JSON BODY
-	req.JSON(userValidateToken)
+	err = h.authRepository.VerifyEmail(data.Email)
 
-	statusCode, data, errs := req.Bytes()
-
-	if len(errs) > 0 {
+	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": errs,
+			"error": err.Error(),
 		})
 	}
 
-	type resValidate struct {
-		Message string `json:"message"`
-	}
+	// aqui vamos criar um novo recovery password e enviarmos um email para validar a troca da senha
+	// go mail.SendMailHTML("", []string{data.Email})
 
-	var isvalid resValidate
-	jsonErr := json.Unmarshal(data, &isvalid)
-	if jsonErr != nil {
-		panic(jsonErr)
-	}
-
-	return c.Status(statusCode).JSON(isvalid)
+	return c.Status(200).JSON(fiber.Map{
+		"Message": "OK",
+	})
 }

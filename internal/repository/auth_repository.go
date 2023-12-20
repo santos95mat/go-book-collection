@@ -47,14 +47,14 @@ func (*authRepository) Login(data dto.UserLoginDTO) (entity.User, string, error)
 	return user, rokenString, nil
 }
 
-func (*authRepository) VerifyEmail(email string) (string, error) {
+func (*authRepository) VerifyEmail(email string) error {
 	var user entity.User
 
 	err := database.DB.Preload(clause.Associations).First(&user, "email = ?", email).Error
 
 	if err != nil {
-		return "", err
+		return err
 	}
 
-	return user.ID.String(), nil
+	return nil
 }
